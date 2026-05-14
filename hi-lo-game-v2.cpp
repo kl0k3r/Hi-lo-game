@@ -1,12 +1,25 @@
 #include <iostream>
 #include "Random.h"
+#include <limits>
 
+void ignoreLine() {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
 int getGuess(int currentGuess) {
-    std::cout << "Guess #" << currentGuess << ": ";
-    int userNum{};
-    std::cin >> userNum;
-    return userNum;
+    while (true) {
+        std::cout << "Guess #" << currentGuess << ": ";
+        int userNum{};
+        std::cin >> userNum;
+        if (!std::cin || userNum < 1 || userNum > 100) {
+            std::cin.clear();
+            ignoreLine();
+            std::cout << "Oops, you've entered something wrong. Try again!\n";
+            continue;
+        }
+        ignoreLine();
+        return userNum;
+    }
 }
 
 void printRes(int currentGuess, int myNum) {
@@ -41,6 +54,9 @@ char askToPlayAgain() {
     do {
         std::cout << "Would you like to play again (y/n)? ";
         std::cin >> answer;
+        std::cin.clear();
+        ignoreLine();
+
     }
     while (!(answer == 'y' || answer == 'n'));
 
